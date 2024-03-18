@@ -33,19 +33,19 @@ class ParliamentarianDetails {
 
   factory ParliamentarianDetails.fromMap(Map<String, dynamic> map) =>
       ParliamentarianDetails(
-        nickname: map['ultimoStatus']['nomeEleitoral'],
-        situation: map['ultimoStatus']['situacao'],
-        condition: map['ultimoStatus']['condicaoEleitoral'],
-        status: map['ultimoStatus']['descricaoStatus'],
-        cpf: map['cpf'],
-        sex: map['sexo'],
-        website: map['urlWebsite'],
-        socialMedia: map['redeSocial'],
-        birthDate: map['dataNascimento'],
-        deathDate: map['dataFalecimento'],
-        birthUf: map['ufNascimento'],
-        birthCity: map['municipioNascimento'],
-        education: map['escolaridade'],
-        office: map['ultimoStatus']['gabinete'],
+        nickname: map['ultimoStatus']['nomeEleitoral'] ?? '',
+        situation: map['ultimoStatus']['situacao'] ?? '',
+        condition: map['ultimoStatus']['condicaoEleitoral'] ?? '',
+        status: map['ultimoStatus']['descricaoStatus'] ?? '',
+        cpf: map['cpf'] ?? '',
+        sex: map['sexo'] ?? '',
+        website: map['urlWebsite'] ?? '',
+        socialMedia: map['redeSocial'] ?? [],
+        birthDate: map['dataNascimento'] ?? '',
+        deathDate: map['dataFalecimento'] ?? '',
+        birthUf: map['ufNascimento'] ?? '',
+        birthCity: map['municipioNascimento'] ?? '',
+        education: map['escolaridade'] ?? '',
+        office: map['ultimoStatus']['gabinete'] ?? {},
       );
 }

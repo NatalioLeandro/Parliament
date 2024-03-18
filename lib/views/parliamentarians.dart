@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:parliament/repositories/parliamentarian.dart';
 import 'package:parliament/stores/parliamentarian.dart';
 
-
 import '../routes/router.dart' as routes;
 import '../services/client.dart';
 
@@ -15,13 +14,11 @@ class Parliamentarians extends StatefulWidget {
 }
 
 class _ParliamentariansState extends State<Parliamentarians> {
-
   final ParliamentarianStore store = ParliamentarianStore(
-    repository: ParliamentarianRepository(
-      client: HttpClient(),
+      repository: ParliamentarianRepository(
+    client: HttpClient(),
   ));
 
-  static const defaultImage = 'https://www.camara.leg.br/internet/deputado/bandep/178992.jpg';
 
   @override
   void initState() {
@@ -41,11 +38,13 @@ class _ParliamentariansState extends State<Parliamentarians> {
             ),
           )),
       body: AnimatedBuilder(
-        animation: Listenable.merge([
-          store.isLoading,
-          store.state,
-          store.error,
-        ]),
+        animation: Listenable.merge(
+          [
+            store.isLoading,
+            store.state,
+            store.error,
+          ],
+        ),
         builder: (context, child) {
           if (store.isLoading.value) {
             return const Center(
@@ -99,7 +98,7 @@ class _ParliamentariansState extends State<Parliamentarians> {
                           ),
                           child: ClipOval(
                             child: Image.network(
-                              parliamentarian.photo ?? defaultImage,
+                              parliamentarian.photo,
                               width: 50,
                               height: 50,
                               fit: BoxFit.cover,
@@ -114,14 +113,14 @@ class _ParliamentariansState extends State<Parliamentarians> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              parliamentarian.name ?? 'Sem nome',
+                              parliamentarian.name,
                               style: const TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                             Text(
-                              parliamentarian.party ?? 'Sem partido',
+                              parliamentarian.party,
                               style: const TextStyle(
                                 fontSize: 16,
                               ),

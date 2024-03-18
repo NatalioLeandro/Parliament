@@ -33,15 +33,12 @@ class _ParliamentarianDetailsState extends State<ParliamentarianDetails> {
     client: HttpClient(),
   ));
 
-  static const defaultImage =
-      'https://www.camara.leg.br/internet/deputado/bandep/178992.jpg';
-
   @override
   void initState() {
     super.initState();
-    detailsStore.getParliamentarianDetails(widget.parliamentarian.id ?? 0);
-    expenseStore.getExpenses(widget.parliamentarian.id ?? 0);
-    occupationStore.getOccupations(widget.parliamentarian.id ?? 0);
+    detailsStore.getParliamentarianDetails(widget.parliamentarian.id);
+    expenseStore.getExpenses(widget.parliamentarian.id);
+    occupationStore.getOccupations(widget.parliamentarian.id);
   }
 
   @override
@@ -90,85 +87,360 @@ class _ParliamentarianDetailsState extends State<ParliamentarianDetails> {
           return SingleChildScrollView(
             child: Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      Image.network(
-                        widget.parliamentarian.photo ?? defaultImage,
-                        width: 100,
-                        height: 100,
+                Container(
+                  width: double.infinity,
+                  decoration: const BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(
+                        color: Colors.green,
+                        width: 1,
                       ),
-                      Text(widget.parliamentarian.name ?? ''),
-                      Text('id: ${widget.parliamentarian.id}'),
-                      Text(widget.parliamentarian.party ?? ''),
-                      Text(widget.parliamentarian.uf ?? ''),
-                    ],
+                    ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      ValueListenableBuilder(
-                          valueListenable: detailsStore.state,
-                          builder: (context, value, child) {
-                            return Column(
-                              children: [
-                                const Text('Detalhes'),
-                                Text(value.nickname ?? 'deputado sem apelido'),
-                                Text(value.birthDate ?? ''),
-                                Text(value.education ?? ''),
-                                Text(value.birthCity ?? ''),
-                                Text(value.status ?? ''),
-                                const Text('Gabinete:'),
-                                for (var office in value.office!.entries)
-                                  Text('${office.key}: ${office.value}')
-                              ],
-                            );
-                          }),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      const Text('Despesas'),
-                      for (var expense in expenseStore.state.value)
-                        Column(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        Image.network(
+                          widget.parliamentarian.photo,
+                          width: 100,
+                          height: 100,
+                        ),
+                        Text(
+                          widget.parliamentarian.name,
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text(expense.type ?? ''),
-                            Text(expense.documentDate ?? ''),
-                            Text(expense.providerName ?? ''),
+                            Text(
+                              'Partido: ${widget.parliamentarian.party}',
+                            ),
+                            const SizedBox(width: 10),
+                            Text(
+                              'Legislatura: ${widget.parliamentarian.legislature}',
+                            ),
                           ],
                         ),
-                    ],
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Estado: ${widget.parliamentarian.uf}',
+                            ),
+                            const SizedBox(width: 10),
+                            Text(
+                              'Email: ${widget.parliamentarian.email}',
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      const Text('Ocupações'),
-                      ValueListenableBuilder(
-                          valueListenable: occupationStore.state,
+                Container(
+                  width: double.infinity,
+                  decoration: const BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(
+                        color: Colors.green,
+                        width: 1,
+                      ),
+                    ),
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        Colors.green,
+                        Colors.greenAccent,
+                      ],
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(2.0),
+                    child: Column(
+                      children: [
+                        ValueListenableBuilder(
+                          valueListenable: detailsStore.state,
                           builder: (context, value, child) {
-                            return Column(
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                for (var occupation in value)
-                                  Column(
-                                    children: [
-                                      Text(occupation.title ?? 'Sem título'),
-                                      Text(occupation.entity ?? ''),
-                                      Text(
-                                          '${occupation.startYear ?? 0} - ${occupation.endYear ?? 'Em exercício'}'),
-                                    ],
+                                SizedBox(
+                                  width: 190,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(4.0),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        const Text(
+                                          'Detalhes',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        Text(
+                                            'Nome Eleitoral: ${value.nickname}'),
+                                        Text('Situação: ${value.situation}'),
+                                        Text(
+                                            'Condição Eleitoral: ${value.condition}'),
+                                        Text('CPF: ${value.cpf}'),
+                                        Text('Sexo: ${value.sex}'),
+                                        Text(
+                                            'Escolaridade: ${value.education}'),
+                                        Text(
+                                            'Data de Nascimento: ${value.birthDate}'),
+                                        Text(
+                                            'Data de Falecimento: ${value.deathDate}'),
+                                      ],
+                                    ),
                                   ),
+                                ),
+                                SizedBox(
+                                  width: 190,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(4.0),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        const Text(
+                                          'Gabinete',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        for (var office
+                                            in value.office!.entries)
+                                          Text(
+                                              '${office.key}: ${office.value}'),
+                                      ],
+                                    ),
+                                  ),
+                                ),
                               ],
                             );
-                          }),
-                    ],
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Container(
+                  width: double.infinity,
+                  height: 300,
+                  decoration: const BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(
+                        color: Colors.green,
+                        width: 1,
+                      ),
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Despesas',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 250,
+                          child: ListView(
+                            scrollDirection: Axis.horizontal,
+                            children: [
+                              ValueListenableBuilder(
+                                valueListenable: expenseStore.state,
+                                builder: (context, value, child) {
+                                  return Padding(
+                                    padding: const EdgeInsets.all(4.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        for (var expense in value)
+                                          Padding(
+                                            padding: const EdgeInsets.all(4.0),
+                                            child: Container(
+                                              width: 365,
+                                              decoration: BoxDecoration(
+                                                border: Border.all(
+                                                  color: Colors.green,
+                                                  width: 1,
+                                                ),
+                                                borderRadius:
+                                                    BorderRadius.circular(5),
+                                                gradient: const LinearGradient(
+                                                  begin: Alignment.topCenter,
+                                                  end: Alignment.bottomCenter,
+                                                  colors: [
+                                                    Colors.green,
+                                                    Colors.greenAccent,
+                                                  ],
+                                                ),
+                                              ),
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(4.0),
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                        'Ano: ${expense.year}'),
+                                                    Text(
+                                                        'Mês: ${expense.month}'),
+                                                    Text(
+                                                        'Tipo: ${expense.type}'),
+                                                    Text(
+                                                        'Valor: ${expense.documentValue}'),
+                                                    Text(
+                                                        'Nome Fornecedor: ${expense.providerName}'),
+                                                    Text(
+                                                        'CNPJ Fornecedor: ${expense.providerCnpj}'),
+                                                    Text(
+                                                        'Data Documento: ${expense.documentDate}'),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Container(
+                  width: double.infinity,
+                  height: 300,
+                  decoration: const BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(
+                        color: Colors.green,
+                        width: 1,
+                      ),
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Ocupações',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 250,
+                          child: ListView(
+                            scrollDirection: Axis.horizontal,
+                            children: [
+                              ValueListenableBuilder(
+                                valueListenable: occupationStore.state,
+                                builder: (context, value, child) {
+                                  return Padding(
+                                    padding: const EdgeInsets.all(4.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        for (var occupation in value)
+                                          if (occupation.title == '')
+                                            const SizedBox(
+                                              width: 365,
+                                              child: Text(
+                                                'Sem ocupações',
+                                              ),
+                                            )
+                                          else
+                                          Padding(
+                                            padding: const EdgeInsets.all(4.0),
+                                            child: Container(
+                                              width: 365,
+                                              decoration: BoxDecoration(
+                                                border: Border.all(
+                                                  color: Colors.green,
+                                                  width: 1,
+                                                ),
+                                                borderRadius:
+                                                    BorderRadius.circular(5),
+                                                gradient: const LinearGradient(
+                                                  begin: Alignment.topCenter,
+                                                  end: Alignment.bottomCenter,
+                                                  colors: [
+                                                    Colors.green,
+                                                    Colors.greenAccent,
+                                                  ],
+                                                ),
+                                              ),
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(4.0),
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                        'Titulo: ${occupation.title}'),
+                                                    Text(
+                                                        'Entidade: ${occupation.entity}'),
+                                                    Text(
+                                                        'UF Entidade: ${occupation.entityUf}'),
+                                                    Text(
+                                                        'País Entidade: ${occupation.entityCountry}'),
+                                                    Text(
+                                                        'Ano Início: ${occupation.startYear == 'null' ? 'Atual' : occupation.startYear}'),
+                                                    Text(
+                                                        'Ano Fim: ${occupation.endYear == 'null' ? 'Atual' : occupation.endYear}'),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],
