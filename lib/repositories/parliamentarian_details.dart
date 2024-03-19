@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 
 import '../models/parliamentarian_details.dart';
@@ -24,13 +23,16 @@ class ParliamentarianDetailsRepository implements ParliamentarianDetailsInterfac
     if (response.statusCode == 200) {
 
       final body = jsonDecode(response.body);
-      // print(body['dados']);
       return ParliamentarianDetails.fromMap(body['dados']);
 
     } else if (response.statusCode == 404) {
+
       throw NotFoundException('A url informada não foi encontrada');
+
     } else {
+
       throw Exception('Error: ${response.statusCode}');
+
     }
   }
 }

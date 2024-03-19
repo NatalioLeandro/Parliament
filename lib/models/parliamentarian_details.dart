@@ -1,5 +1,6 @@
 class ParliamentarianDetails {
   final String? nickname;
+  final String? civilName;
   final String? situation;
   final String? condition;
   final String? status;
@@ -16,6 +17,7 @@ class ParliamentarianDetails {
 
   ParliamentarianDetails({
     this.nickname,
+    this.civilName,
     this.situation,
     this.condition,
     this.status,
@@ -34,6 +36,7 @@ class ParliamentarianDetails {
   factory ParliamentarianDetails.fromMap(Map<String, dynamic> map) =>
       ParliamentarianDetails(
         nickname: map['ultimoStatus']['nomeEleitoral'] ?? '',
+        civilName: map['nomeCivil'] ?? '',
         situation: map['ultimoStatus']['situacao'] ?? '',
         condition: map['ultimoStatus']['condicaoEleitoral'] ?? '',
         status: map['ultimoStatus']['descricaoStatus'] ?? '',

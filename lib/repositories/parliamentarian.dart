@@ -9,20 +9,19 @@ abstract class ParliamentarianInterface {
 }
 
 class ParliamentarianRepository implements ParliamentarianInterface {
-
   final HttpInterface client;
 
-  ParliamentarianRepository({required this.client});
+  ParliamentarianRepository({
+    required this.client,
+  });
 
   @override
   Future<List<Parliamentarian>> getParliamentarians() async {
-
     final response = await client.get(
       url: 'https://dadosabertos.camara.leg.br/api/v2/deputados',
     );
 
     if (response.statusCode == 200) {
-
       final List<Parliamentarian> parliamentarians = [];
       final body = jsonDecode(response.body);
 
@@ -41,7 +40,5 @@ class ParliamentarianRepository implements ParliamentarianInterface {
       throw Exception('Error: ${response.statusCode}');
 
     }
-
   }
-
 }

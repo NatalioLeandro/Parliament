@@ -10,6 +10,7 @@ import '../repositories/parliamentarian_details.dart';
 import '../services/client.dart';
 
 class ParliamentarianDetails extends StatefulWidget {
+
   final Parliamentarian parliamentarian;
   const ParliamentarianDetails({super.key, required this.parliamentarian});
 
@@ -45,12 +46,11 @@ class _ParliamentarianDetailsState extends State<ParliamentarianDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.green[800],
+        centerTitle: true,
         title: const Text(
           'Detalhes do Deputado',
           style: TextStyle(
-            color: Colors.white,
-          ),
+              color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
         ),
       ),
       body: AnimatedBuilder(
@@ -70,7 +70,9 @@ class _ParliamentarianDetailsState extends State<ParliamentarianDetails> {
               expenseStore.isLoading.value ||
               occupationStore.isLoading.value) {
             return const Center(
-              child: CircularProgressIndicator(),
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+              ),
             );
           }
 
@@ -87,360 +89,415 @@ class _ParliamentarianDetailsState extends State<ParliamentarianDetails> {
           return SingleChildScrollView(
             child: Column(
               children: [
-                Container(
+                SizedBox(
                   width: double.infinity,
-                  decoration: const BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(
-                        color: Colors.green,
-                        width: 1,
-                      ),
-                    ),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children: [
-                        Image.network(
-                          widget.parliamentarian.photo,
-                          width: 100,
-                          height: 100,
+                  height: 200,
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 200,
+                        height: 200,
+                        padding: const EdgeInsets.all(10),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: Colors.blue,
+                                ),
+                              ),
+                              child: ClipOval(
+                                child: Image.network(
+                                  widget.parliamentarian.photo,
+                                  width: 100,
+                                  height: 100,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            Text(
+                              widget.parliamentarian.name,
+                              style: const TextStyle(
+                                color: Colors.blue,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
                         ),
-                        Text(
-                          widget.parliamentarian.name,
-                          style: const TextStyle(
+                      ),
+                      Container(
+                        padding: const EdgeInsets.all(10),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.all(10),
+                              decoration: const BoxDecoration(
+                                border: Border(
+                                  left: BorderSide(
+                                    color: Colors.blue,
+                                    width: 1,
+                                  ),
+                                ),
+                              ),
+                              child: DefaultTextStyle(
+                                style: const TextStyle(
+                                  color: Colors.blue,
+                                  fontSize: 10,
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Partido: ${widget.parliamentarian.party}',
+                                    ),
+                                    Text(
+                                      'Estado: ${widget.parliamentarian.uf}',
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Container(
+                              width: 170,
+                              padding: const EdgeInsets.all(10),
+                              decoration: const BoxDecoration(
+                                border: Border(
+                                  left: BorderSide(
+                                    color: Colors.blue,
+                                    width: 1,
+                                  ),
+                                ),
+                              ),
+                              child: DefaultTextStyle(
+                                style: const TextStyle(
+                                  color: Colors.blue,
+                                  fontSize: 10,
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Legislatura: ${widget.parliamentarian.legislature}',
+                                    ),
+                                    Text(
+                                      'Email: ${widget.parliamentarian.email}',
+                                    ),
+                                    Text(
+                                      'URI: ${widget.parliamentarian.uri}',
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  child: Column(
+                    children: [
+                      Container(
+                        alignment: Alignment.center,
+                        width: double.infinity,
+                        decoration: const BoxDecoration(
+                          color: Colors.blue,
+                        ),
+                        child: const Text(
+                          'Detalhes',
+                          style: TextStyle(
+                            color: Colors.white,
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Partido: ${widget.parliamentarian.party}',
-                            ),
-                            const SizedBox(width: 10),
-                            Text(
-                              'Legislatura: ${widget.parliamentarian.legislature}',
-                            ),
-                          ],
+                      ),
+                      Container(
+                        padding: const EdgeInsets.all(10),
+                        child: DefaultTextStyle(
+                          style: const TextStyle(
+                            color: Colors.blue,
+                            fontSize: 10,
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Nome Civil: ${detailsStore.state.value.civilName}',
+                                  ),
+                                  Text(
+                                    'Nome Eleitoral: ${detailsStore.state.value.nickname}',
+                                  ),
+                                  Text(
+                                    'CPF: ${detailsStore.state.value.cpf}',
+                                  ),
+                                  Text(
+                                    'Data de nascimento: ${detailsStore.state.value.birthDate}',
+                                  ),
+                                  Text(
+                                    'Escolaridade: ${detailsStore.state.value.education}',
+                                  ),
+                                ],
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    padding: const EdgeInsets.all(6),
+                                    margin: const EdgeInsets.only(top: 10, bottom: 10),
+                                    alignment: Alignment.center,
+                                    decoration: const BoxDecoration(
+                                      border: Border(
+                                        bottom: BorderSide(
+                                          color: Colors.blue,
+                                          width: 1,
+                                        ),
+                                        top: BorderSide(
+                                          color: Colors.blue,
+                                          width: 1,
+                                        ),
+                                      ),
+                                    ),
+                                    child: const Text(
+                                      'Detalhes do Gabinete',
+                                      style: TextStyle(
+                                        color: Colors.blue,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                  for (var officeinfo in detailsStore
+                                      .state.value.office!.entries)
+                                    Text(
+                                      '${officeinfo.key}: ${officeinfo.value}',
+                                    ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Estado: ${widget.parliamentarian.uf}',
-                            ),
-                            const SizedBox(width: 10),
-                            Text(
-                              'Email: ${widget.parliamentarian.email}',
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
                 Container(
-                  width: double.infinity,
-                  decoration: const BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(
-                        color: Colors.green,
-                        width: 1,
-                      ),
-                    ),
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        Colors.green,
-                        Colors.greenAccent,
-                      ],
-                    ),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(2.0),
-                    child: Column(
-                      children: [
-                        ValueListenableBuilder(
-                          valueListenable: detailsStore.state,
-                          builder: (context, value, child) {
-                            return Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(
-                                  width: 190,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(4.0),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        const Text(
-                                          'Detalhes',
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                        Text(
-                                            'Nome Eleitoral: ${value.nickname}'),
-                                        Text('Situação: ${value.situation}'),
-                                        Text(
-                                            'Condição Eleitoral: ${value.condition}'),
-                                        Text('CPF: ${value.cpf}'),
-                                        Text('Sexo: ${value.sex}'),
-                                        Text(
-                                            'Escolaridade: ${value.education}'),
-                                        Text(
-                                            'Data de Nascimento: ${value.birthDate}'),
-                                        Text(
-                                            'Data de Falecimento: ${value.deathDate}'),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 190,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(4.0),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        const Text(
-                                          'Gabinete',
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                        for (var office
-                                            in value.office!.entries)
-                                          Text(
-                                              '${office.key}: ${office.value}'),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            );
-                          },
+                  padding: const EdgeInsets.all(10),
+                  child: Column(
+                    children: [
+                      Container(
+                        alignment: Alignment.center,
+                        width: double.infinity,
+                        decoration: const BoxDecoration(
+                          color: Colors.blue,
                         ),
-                      ],
-                    ),
-                  ),
-                ),
-                Container(
-                  width: double.infinity,
-                  height: 300,
-                  decoration: const BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(
-                        color: Colors.green,
-                        width: 1,
-                      ),
-                    ),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        const Text(
+                        child: const Text(
                           'Despesas',
                           style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        SizedBox(
-                          height: 250,
-                          child: ListView(
-                            scrollDirection: Axis.horizontal,
-                            children: [
-                              ValueListenableBuilder(
-                                valueListenable: expenseStore.state,
-                                builder: (context, value, child) {
-                                  return Padding(
-                                    padding: const EdgeInsets.all(4.0),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        for (var expense in value)
-                                          Padding(
-                                            padding: const EdgeInsets.all(4.0),
-                                            child: Container(
-                                              width: 365,
-                                              decoration: BoxDecoration(
-                                                border: Border.all(
-                                                  color: Colors.green,
-                                                  width: 1,
-                                                ),
-                                                borderRadius:
-                                                    BorderRadius.circular(5),
-                                                gradient: const LinearGradient(
-                                                  begin: Alignment.topCenter,
-                                                  end: Alignment.bottomCenter,
-                                                  colors: [
-                                                    Colors.green,
-                                                    Colors.greenAccent,
-                                                  ],
-                                                ),
-                                              ),
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(4.0),
-                                                child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.start,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                        'Ano: ${expense.year}'),
-                                                    Text(
-                                                        'Mês: ${expense.month}'),
-                                                    Text(
-                                                        'Tipo: ${expense.type}'),
-                                                    Text(
-                                                        'Valor: ${expense.documentValue}'),
-                                                    Text(
-                                                        'Nome Fornecedor: ${expense.providerName}'),
-                                                    Text(
-                                                        'CNPJ Fornecedor: ${expense.providerCnpj}'),
-                                                    Text(
-                                                        'Data Documento: ${expense.documentDate}'),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                      ],
+                      ),
+                      SizedBox(
+                        height: 150,
+                        child: ListView(
+                          scrollDirection: Axis.horizontal,
+                          children: [
+                            ValueListenableBuilder(
+                              valueListenable: expenseStore.state,
+                              builder: (context, state, child) {
+                                if (expenseStore.state.value.isEmpty) {
+                                  return const Center(
+                                    child: Text(
+                                      'Nenhuma despesa encontrada',
+                                      style: TextStyle(
+                                        color: Colors.blue,
+                                        fontSize: 20,
+                                      ),
                                     ),
                                   );
-                                },
-                              ),
-                            ],
-                          ),
+                                }
+                                return Row(
+                                  children: expenseStore.state.value
+                                      .map((expense) => Container(
+                                            width: 365,
+                                            margin: const EdgeInsets.all(4),
+                                            padding: const EdgeInsets.all(10),
+                                            decoration: BoxDecoration(
+                                              border: Border.all(
+                                                color: Colors.blue,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                            ),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  'Tipo: ${expense.type}',
+                                                  style: const TextStyle(
+                                                    color: Colors.blue,
+                                                    fontSize: 10,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  'Fornecedor: ${expense.providerName}',
+                                                  style: const TextStyle(
+                                                    color: Colors.blue,
+                                                    fontSize: 10,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  'Valor: ${expense.documentValue}',
+                                                  style: const TextStyle(
+                                                    color: Colors.blue,
+                                                    fontSize: 10,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  'Data: ${expense.documentDate}',
+                                                  style: const TextStyle(
+                                                    color: Colors.blue,
+                                                    fontSize: 10,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ))
+                                      .toList(),
+                                );
+                              },
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
                 Container(
-                  width: double.infinity,
-                  height: 300,
-                  decoration: const BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(
-                        color: Colors.green,
-                        width: 1,
-                      ),
-                    ),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        const Text(
+                  padding: const EdgeInsets.all(10),
+                  child: Column(
+                    children: [
+                      Container(
+                        alignment: Alignment.center,
+                        width: double.infinity,
+                        decoration: const BoxDecoration(
+                          color: Colors.blue,
+                        ),
+                        child: const Text(
                           'Ocupações',
                           style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        SizedBox(
-                          height: 250,
-                          child: ListView(
-                            scrollDirection: Axis.horizontal,
-                            children: [
-                              ValueListenableBuilder(
-                                valueListenable: occupationStore.state,
-                                builder: (context, value, child) {
-                                  return Padding(
-                                    padding: const EdgeInsets.all(4.0),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        for (var occupation in value)
-                                          if (occupation.title == '')
-                                            const SizedBox(
-                                              width: 365,
-                                              child: Text(
-                                                'Sem ocupações',
-                                              ),
-                                            )
-                                          else
-                                          Padding(
-                                            padding: const EdgeInsets.all(4.0),
-                                            child: Container(
-                                              width: 365,
-                                              decoration: BoxDecoration(
-                                                border: Border.all(
-                                                  color: Colors.green,
-                                                  width: 1,
-                                                ),
-                                                borderRadius:
-                                                    BorderRadius.circular(5),
-                                                gradient: const LinearGradient(
-                                                  begin: Alignment.topCenter,
-                                                  end: Alignment.bottomCenter,
-                                                  colors: [
-                                                    Colors.green,
-                                                    Colors.greenAccent,
-                                                  ],
-                                                ),
-                                              ),
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(4.0),
-                                                child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.start,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                        'Titulo: ${occupation.title}'),
-                                                    Text(
-                                                        'Entidade: ${occupation.entity}'),
-                                                    Text(
-                                                        'UF Entidade: ${occupation.entityUf}'),
-                                                    Text(
-                                                        'País Entidade: ${occupation.entityCountry}'),
-                                                    Text(
-                                                        'Ano Início: ${occupation.startYear == 'null' ? 'Atual' : occupation.startYear}'),
-                                                    Text(
-                                                        'Ano Fim: ${occupation.endYear == 'null' ? 'Atual' : occupation.endYear}'),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
+                      ),
+                      SizedBox(
+                        height: 100,
+                        child: ListView(
+                          scrollDirection: Axis.horizontal,
+                          children: [
+                            ValueListenableBuilder(
+                              valueListenable: occupationStore.state,
+                              builder: (context, state, child) {
+                                if (occupationStore.state.value.first.title ==
+                                    '') {
+                                  return Center(
+                                    child: Container(
+                                      width: 365,
+                                      margin: const EdgeInsets.all(4),
+                                      padding: const EdgeInsets.all(10),
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                          color: Colors.blue,
+                                        ),
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: Container(
+                                        alignment: Alignment.center,
+                                        child: const Text(
+                                          'Nenhuma ocupação encontrada',
+                                          style: TextStyle(
+                                            color: Colors.blue,
+                                            fontSize: 20,
                                           ),
-                                      ],
+                                        ),
+                                      ),
                                     ),
                                   );
-                                },
-                              ),
-                            ],
-                          ),
+                                }
+                                return Row(
+                                  children: occupationStore.state.value
+                                      .map((occupation) => Container(
+                                            width: 365,
+                                            margin: const EdgeInsets.all(4),
+                                            padding: const EdgeInsets.all(10),
+                                            decoration: BoxDecoration(
+                                              border: Border.all(
+                                                color: Colors.blue,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                            ),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  'Nome: ${occupation.title}',
+                                                  style: const TextStyle(
+                                                    color: Colors.blue,
+                                                    fontSize: 10,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  'Entidade: ${occupation.entity == '' ? 'Não informado' : occupation.entity}',
+                                                  style: const TextStyle(
+                                                    color: Colors.blue,
+                                                    fontSize: 10,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  'Data de início: ${occupation.startYear == 'null' ? 'Não informado' : occupation.startYear}',
+                                                  style: const TextStyle(
+                                                    color: Colors.blue,
+                                                    fontSize: 10,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  'Data de fim: ${occupation.startYear == 'null' && occupation.endYear == 'null' ? 'Não Informado' : occupation.endYear == 'null' ? 'Até o momento' : occupation.endYear}',
+                                                  style: const TextStyle(
+                                                    color: Colors.blue,
+                                                    fontSize: 10,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ))
+                                      .toList(),
+                                );
+                              },
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ],

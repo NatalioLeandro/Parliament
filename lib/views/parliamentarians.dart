@@ -19,7 +19,6 @@ class _ParliamentariansState extends State<Parliamentarians> {
     client: HttpClient(),
   ));
 
-
   @override
   void initState() {
     super.initState();
@@ -30,13 +29,13 @@ class _ParliamentariansState extends State<Parliamentarians> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          backgroundColor: Colors.green[800],
-          title: const Text(
-            'Deputados',
-            style: TextStyle(
-              color: Colors.white,
-            ),
-          )),
+        centerTitle: true,
+        title: const Text(
+          'Deputados',
+          style: TextStyle(
+              color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+        ),
+      ),
       body: AnimatedBuilder(
         animation: Listenable.merge(
           [
@@ -48,7 +47,9 @@ class _ParliamentariansState extends State<Parliamentarians> {
         builder: (context, child) {
           if (store.isLoading.value) {
             return const Center(
-              child: CircularProgressIndicator(),
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+              ),
             );
           }
 
@@ -60,7 +61,7 @@ class _ParliamentariansState extends State<Parliamentarians> {
 
           if (store.state.value.isEmpty) {
             return const Center(
-              child: Text('No deputies found'),
+              child: Text('Nenhum deputado encontrado.'),
             );
           }
 
@@ -79,9 +80,11 @@ class _ParliamentariansState extends State<Parliamentarians> {
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16),
-                    color: Colors.white,
+                    gradient: const LinearGradient(
+                      colors: [Colors.blue, Color(0xFF00BCD4)],
+                    ),
                     border: Border.all(
-                      color: Colors.green[800]!,
+                      color: Colors.blue,
                     ),
                   ),
                   margin: const EdgeInsets.all(4),
@@ -93,7 +96,7 @@ class _ParliamentariansState extends State<Parliamentarians> {
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             border: Border.all(
-                              color: Colors.green[800]!,
+                              color: Colors.blue,
                             ),
                           ),
                           child: ClipOval(
@@ -109,23 +112,22 @@ class _ParliamentariansState extends State<Parliamentarians> {
                       const SizedBox(width: 16),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              parliamentarian.name,
-                              style: const TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
+                        child: DefaultTextStyle(
+                          style: const TextStyle(color: Colors.white, fontSize: 16),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                parliamentarian.name,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
-                            ),
-                            Text(
-                              parliamentarian.party,
-                              style: const TextStyle(
-                                fontSize: 16,
+                              Text(
+                                parliamentarian.party,
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ],
