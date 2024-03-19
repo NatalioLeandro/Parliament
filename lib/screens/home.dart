@@ -20,7 +20,8 @@ class _HomeState extends State<Home> {
               color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
         ),
       ),
-      body: Column(
+      body: ListView(
+        scrollDirection: Axis.vertical,
         children: [
           GestureDetector(
             onTap: () {

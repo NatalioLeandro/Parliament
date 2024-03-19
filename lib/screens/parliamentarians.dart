@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:parliament/repositories/parliamentarian.dart';
 import 'package:parliament/stores/parliamentarian.dart';
 
+import '../models/parliamentarian.dart';
 import '../routes/router.dart' as routes;
 import '../services/client.dart';
 
@@ -19,10 +20,19 @@ class _ParliamentariansState extends State<Parliamentarians> {
     client: HttpClient(),
   ));
 
+  String query = '';
+
   @override
   void initState() {
     super.initState();
     store.getParliamentarians();
+  }
+
+  List<Parliamentarian> filterParliamentarians(List<Parliamentarian> parliamentarians) {
+    return parliamentarians.where((parliamentarian) =>
+    parliamentarian.name.toLowerCase().contains(query.toLowerCase()) ||
+        parliamentarian.party.toLowerCase().contains(query.toLowerCase()) ||
+        parliamentarian.uf.toLowerCase().contains(query.toLowerCase())).toList();
   }
 
   @override
@@ -34,6 +44,27 @@ class _ParliamentariansState extends State<Parliamentarians> {
           'Deputados',
           style: TextStyle(
               color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+        ),
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(50),
+          child: Container(
+            margin: const EdgeInsets.all(16),
+            child: TextField(
+              decoration: const InputDecoration(
+                hintText: 'Buscar Deputados...',
+                border: InputBorder.none,
+                hintStyle: TextStyle(color: Colors.white),
+                icon: Icon(
+                  Icons.search,
+                  color: Colors.white,
+                ),
+              ),
+              style: const TextStyle(color: Colors.white, fontSize: 16),
+              onChanged: (value) => setState(() {
+                query = value;
+              }),
+            ),
+          ),
         ),
       ),
       body: AnimatedBuilder(
@@ -65,10 +96,12 @@ class _ParliamentariansState extends State<Parliamentarians> {
             );
           }
 
+          final filteredParliamentarians = filterParliamentarians(store.state.value);
+
           return ListView.builder(
-            itemCount: store.state.value.length,
+            itemCount: filteredParliamentarians.length,
             itemBuilder: (context, index) {
-              final parliamentarian = store.state.value[index];
+              final parliamentarian = filteredParliamentarians[index];
               return GestureDetector(
                 onTap: () {
                   Navigator.pushNamed(
@@ -113,7 +146,8 @@ class _ParliamentariansState extends State<Parliamentarians> {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: DefaultTextStyle(
-                          style: const TextStyle(color: Colors.white, fontSize: 16),
+                          style: const TextStyle(
+                              color: Colors.white, fontSize: 16),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -124,7 +158,7 @@ class _ParliamentariansState extends State<Parliamentarians> {
                                 ),
                               ),
                               Text(
-                                parliamentarian.party,
+                                '${parliamentarian.party} - ${parliamentarian.uf}',
                               ),
                             ],
                           ),

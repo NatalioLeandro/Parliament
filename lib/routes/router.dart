@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:parliament/views/parliamentarians.dart';
+import 'package:parliament/screens/parliamentarians.dart';
 
 import '../models/parliamentarian.dart';
-import '../views/home.dart';
-import '../views/parliamentarian_details.dart';
+import '../screens/home.dart';
+import '../screens/parliamentarian_details.dart';
 
 const String home = '/';
 const String parliamentarians = '/parliamentarians';
