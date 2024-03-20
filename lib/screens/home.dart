@@ -51,7 +51,7 @@ class _HomeState extends State<Home> {
           ),
           GestureDetector(
             onTap: () {
-              Navigator.pushNamed(context, routes.parliamentarians);
+              Navigator.pushNamed(context, routes.commissions);
             },
             child: Padding(
               padding: const EdgeInsets.all(8.0),
